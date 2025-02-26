@@ -10,7 +10,7 @@ const MaterialProductTable = dynamic(
   { 
     ssr: false,
     loading: () => (
-      <div className="flex justify-center p-8">
+      <div className="flex justify-center p-8" suppressHydrationWarning>
         <CircularProgress />
       </div>
     )
@@ -26,7 +26,7 @@ export default function MaterialTableClient() {
 
   if (!isMounted) {
     return (
-      <div className="flex justify-center p-8">
+      <div className="flex justify-center p-8" suppressHydrationWarning>
         <CircularProgress />
       </div>
     );

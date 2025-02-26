@@ -30,17 +30,29 @@ const ProductListRenderer: React.FC<WithDataProps<Product>> = ({ data, isLoading
     );
   }
 
+  // Get headers from the first item in the data array
+  const headers = data && data.length > 0 
+    ? Object.keys(data[0]).map(key => ({
+        key,
+        label: key.charAt(0).toUpperCase() + key.slice(1) // Capitalize first letter
+      }))
+    : [];
+
   return (
-    <div className="product-list overflow-x-auto">
+    <div className="product-list overflow-x-auto" suppressHydrationWarning>
       <div className="inline-block min-w-full align-middle">
         <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
           <thead className="bg-gray-50 dark:bg-gray-800">
             <tr>
-              <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">ID</th>
-              <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Name</th>
-              <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Price</th>
-              <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Category</th>
-              <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Stock</th>
+              {headers.map(({ key, label }) => (
+                <th
+                  key={key}
+                  scope="col"
+                  className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider"
+                >
+                  {label}
+                </th>
+              ))}
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200 dark:bg-gray-900 dark:divide-gray-700">
