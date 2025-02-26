@@ -7,42 +7,71 @@ import { Product, WithDataProps } from '../../types';
  */
 const ProductListRenderer: React.FC<WithDataProps<Product>> = ({ data, isLoading, error }) => {
   if (isLoading) {
-    return <div>Loading products...</div>;
+    return (
+      <div className="flex justify-center items-center p-8 text-gray-600 dark:text-gray-300">
+        <div className="animate-pulse">Loading products...</div>
+      </div>
+    );
   }
 
   if (error) {
-    return <div>Error: {error}</div>;
+    return (
+      <div className="p-4 bg-red-50 dark:bg-red-900/30 text-red-600 dark:text-red-400 rounded-lg">
+        Error: {error}
+      </div>
+    );
   }
 
   if (!data || data.length === 0) {
-    return <div>No products found.</div>;
+    return (
+      <div className="p-4 bg-gray-50 dark:bg-gray-900/30 text-gray-600 dark:text-gray-400 rounded-lg text-center">
+        No products found.
+      </div>
+    );
   }
 
   return (
-    <div className="product-list">
-      <h2>Products</h2>
-      <table className="min-w-full border-collapse border border-gray-300">
-        <thead>
-          <tr className="bg-gray-100">
-            <th className="border border-gray-300 p-2">ID</th>
-            <th className="border border-gray-300 p-2">Name</th>
-            <th className="border border-gray-300 p-2">Price</th>
-            <th className="border border-gray-300 p-2">Category</th>
-            <th className="border border-gray-300 p-2">Stock</th>
-          </tr>
-        </thead>
-        <tbody>
-          {data.map((product) => (
-            <tr key={product.id} className="hover:bg-gray-50">
-              <td className="border border-gray-300 p-2">{product.id}</td>
-              <td className="border border-gray-300 p-2">{product.name}</td>
-              <td className="border border-gray-300 p-2">${product.price.toFixed(2)}</td>
-              <td className="border border-gray-300 p-2">{product.category}</td>
-              <td className="border border-gray-300 p-2">{product.stock}</td>
+    <div className="product-list overflow-x-auto">
+      <div className="inline-block min-w-full align-middle">
+        <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+          <thead className="bg-gray-50 dark:bg-gray-800">
+            <tr>
+              <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">ID</th>
+              <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Name</th>
+              <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Price</th>
+              <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Category</th>
+              <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Stock</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody className="bg-white divide-y divide-gray-200 dark:bg-gray-900 dark:divide-gray-700">
+            {data.map((product) => (
+              <tr key={product.id} className="hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">{product.id}</td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">{product.name}</td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">
+                  <span className="text-green-600 dark:text-green-400 font-medium">
+                    ${product.price.toFixed(2)}
+                  </span>
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">
+                  <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200">
+                    {product.category}
+                  </span>
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">
+                  <span className={`${
+                    product.stock > 10 ? 'text-green-600 dark:text-green-400' : 
+                    product.stock > 5 ? 'text-yellow-600 dark:text-yellow-400' : 
+                    'text-red-600 dark:text-red-400'
+                  } font-medium`}>
+                    {product.stock}
+                  </span>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };
